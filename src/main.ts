@@ -26,30 +26,30 @@ async function bootstrap() {
 
   //Código que sincroniza las rutas con la base de datos
   const server = app.getHttpServer();
-  const adminRouteService = app.get<RoutesService>(RoutesService);
-  adminRouteService.deleteRoutes();
-  server._events.request._router.stack.forEach(function(r) {
-    if (r.route && r.route.path) {
-      const methods = [];
-      if (r.route.methods.get) {
-        methods.push('GET');
-      }
-      if (r.route.methods.post) {
-        methods.push('POST');
-      }
-      if (r.route.methods.put) {
-        methods.push('PUT');
-      }
-      if (r.route.methods.delete) {
-        methods.push('DELETE');
-      }
-      const itemRoute = {
-        path: r.route.path,
-        methods,
-        roles: [],
-      };
-      adminRouteService.insertRoutes(itemRoute);
-    }
-  });
+  // const adminRouteService = app.get<RoutesService>(RoutesService);
+  // adminRouteService.deleteRoutes();
+  // server._events.request._router.stack.forEach(function(r) {
+  //   if (r.route && r.route.path) {
+  //     const methods = [];
+  //     if (r.route.methods.get) {
+  //       methods.push('GET');
+  //     }
+  //     if (r.route.methods.post) {
+  //       methods.push('POST');
+  //     }
+  //     if (r.route.methods.put) {
+  //       methods.push('PUT');
+  //     }
+  //     if (r.route.methods.delete) {
+  //       methods.push('DELETE');
+  //     }
+  //     const itemRoute = {
+  //       path: r.route.path,
+  //       methods,
+  //       roles: [],
+  //     };
+  //     adminRouteService.insertRoutes(itemRoute);
+  //   }
+  // });
 }
 bootstrap();

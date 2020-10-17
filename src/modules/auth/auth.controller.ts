@@ -9,15 +9,19 @@ import {
   HttpStatus,
   Get,
   Body,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ACGuard, UseRoles } from 'nest-access-control';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Res() res, @Body() loginDTO: LoginDTO) {
-    const rta = await this.authService.login(loginDTO);
+  async login(@Request() req,@Res() res) {
+    const rta = await this.authService.login(req.user);
     return res.status(HttpStatus.OK).json(rta);
   }
 
@@ -27,8 +31,15 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(userRegistered);
   }
 
+  @UseGuards(ACGuard)
+  @UseRoles({
+    resource: 'POST',
+    action: 'read',
+    possession: 'any'
+  })
+  @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   async getProfileUser(@Request() req) {
-    return req.user;
+    return 'bienvenido';
   }
 }
